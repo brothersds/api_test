@@ -23,8 +23,8 @@ class TestNewLocation():
             },
             "accuracy": 50,
             "name": "Frontline house",
-            "phone number": "(+91) 983 893 3937",
-            "adress": "29, side layout, cohen 09",
+            "phone_number": "(+91) 983 893 3937",
+            "address": "29, side layout, cohen 09",
             "types": [
                 "shoe park",
                 "shop"
@@ -52,8 +52,18 @@ class TestNewLocation():
         print(f'place_id: {place_id}')
 
         """Проверка создания новой локации"""
-        get_resourse = "/maps/api/place/get/json"      # ресурс метода GET
 
+        get_resourse = "/maps/api/place/get/json"      # ресурс метода GET
+        get_url = f'{base_url}{get_resourse}{key}&place_id={place_id}'
+        print(get_url)
+        result_get = requests.get(get_url)
+        print(result_get.text)
+        print("Статус код :" + str(result_get.status_code))
+        assert 200 == result_get.status_code
+        if result_get.status_code == 200:
+            print("Успешно!!! Проверка создания новой локации прошла успешно")
+        else:
+            print("Провал!!! Запрос ошибочный")
 
 
 new_place = TestNewLocation()
