@@ -65,6 +65,16 @@ class TestNewLocation():
         else:
             print("Провал!!! Запрос ошибочный")
 
+        """Изменение новой локации"""
+        put_resourse = "/maps/api/place/update/json"  # ресурс метода PUT
+        put_url = base_url + put_resourse + key
+        print(put_url)
+        json_for_update_new_location = {
+            "place_id": f'{place_id}',
+            "address": "100 Lenina street, RU",
+            "key": key.partition("=")[2]
+        }
+
 
 new_place = TestNewLocation()
 new_place.test_create_new_location()
