@@ -20,6 +20,19 @@ class TestNewJoke():
             print("Провал!!! Запрос ошибочный")
         result.encoding = 'utf-8'
         print(result.text)
+        check = result.json()
+        # check_info = check.get("categories")
+        # print(check_info)
+        # print(result.json().get())
+        # assert check_info == []
+        # print("Категория верна")
+        check_info_value = check.get("value")
+        print(check_info_value)
+        name = "Chuck"
+        if name in check_info_value:
+            print("Chuck  присутствует")
+        else:
+            print("Chuck  отсутствует")
 
 
 random_joke = TestNewJoke()
