@@ -11,6 +11,7 @@ class TestNewLocation():
         key = "?key=qaclick123"                        # параметр для всех запросов
 
         """Создание новой локации"""
+
         post_resourse = "/maps/api/place/add/json"      # ресурс метода POST
 
         post_url = base_url + post_resourse + key
@@ -66,14 +67,46 @@ class TestNewLocation():
             print("Провал!!! Запрос ошибочный")
 
         """Изменение новой локации"""
+
         put_resourse = "/maps/api/place/update/json"  # ресурс метода PUT
         put_url = base_url + put_resourse + key
         print(put_url)
         json_for_update_new_location = {
-            "place_id": f'{place_id}',
+            "place_id": place_id,
             "address": "100 Lenina street, RU",
             "key": key.partition("=")[2]
         }
+        result_put = requests.put(put_url, json=json_for_update_new_location)
+        print(result_put.text)
+
+        print("Статус код :" + str(result_put.status_code))
+        assert 200 == result_put.status_code
+        if result_put.status_code == 200:
+            print("Успешно!!! Изменение новой локации прошло успешно")
+        else:
+            print("Провал!!! Запрос ошибочный")
+
+        check_put = result_put.json()
+        check_info_put = check_put.get("msg")
+        print(f'Сообщение: {check_info_put}')
+        assert check_info_put == "Address successfully updated"
+        print("Сообщение верно")
+
+        """Проверка изменения новой локации"""
+
+        result_get = requests.get(get_url)
+        print(result_get.text)
+        print("Статус код :" + str(result_get.status_code))
+        assert 200 == result_get.status_code
+        if result_get.status_code == 200:
+            print("Успешно!!! Проверка изменения новой локации прошла успешно")
+        else:
+            print("Провал!!! Запрос ошибочный")
+        check_address = result_get.json()
+        check_info_address = check_address.get("address")
+        print(f'Измененный адрес: {check_info_address}')
+        assert check_info_address == "100 Lenina street, RU"
+        print("Адрес изменен")
 
 
 new_place = TestNewLocation()
