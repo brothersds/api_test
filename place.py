@@ -104,9 +104,50 @@ class TestNewLocation():
             print("Провал!!! Запрос ошибочный")
         check_address = result_get.json()
         check_info_address = check_address.get("address")
-        print(f'Измененный адрес: {check_info_address}')
+        print(f'Сообщение: {check_info_address}')
         assert check_info_address == "100 Lenina street, RU"
-        print("Адрес изменен")
+        print("Сообщение верно")
+
+        """Удаление новой локации"""
+
+        delete_resourse = "/maps/api/place/delete/json"  # ресурс метода DELETE
+        delete_url = base_url + delete_resourse + key
+        print(delete_url)
+        json_for_delete_new_location = {
+            "place_id": place_id
+        }
+        result_delete = requests.delete(delete_url, json=json_for_delete_new_location)
+        print(result_delete.text)
+
+        print("Статус код :" + str(result_get.status_code))
+        assert 200 == result_get.status_code
+        if result_get.status_code == 200:
+            print("Успешно!!! Удаление новой локации прошло успешно")
+        else:
+            print("Провал!!! Запрос ошибочный")
+        check_status = result_delete.json()
+        check_status_info = check_status.get("status")
+        print(f'Сообщение: {check_status_info}')
+        assert check_status_info == "OK"
+        print("Сообщение верно")
+
+        """Проверка удаления новой локации"""
+
+        result_get = requests.get(get_url)
+        print(result_get.text)
+        print("Статус код :" + str(result_get.status_code))
+        assert 404 == result_get.status_code
+        if result_get.status_code == 404:
+            print("Успешно!!! Проверка удаления новой локации прошла успешно")
+        else:
+            print("Провал!!! Запрос ошибочный")
+        check_msg = result_get.json()
+        check_msg_info = check_msg.get("msg")
+        print(f'Сообщение: {check_msg_info}')
+        assert check_msg_info == "Get operation failed, looks like place_id  doesn't exists"
+        print("Сообщение верно")
+
+        print("\nТестирование TestNewLocation завершено успешно")
 
 
 new_place = TestNewLocation()
